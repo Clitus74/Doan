@@ -8,10 +8,11 @@ public class PlayerController : MonoBehaviour
     PlayerInputAction input;
     private Vector3 moveDir;
     private Rigidbody rb;
-    [SerializeField] private float speed = 5f;
+    [SerializeField] float sprintSpeed, walkSpeed, jumpForce, smoothTime;
     Vector3 moveAmount;
     Vector2 moveValue;
     Vector3 smoothMove;
+    bool grounded;
     private void Awake()
     {
         input = new PlayerInputAction();
@@ -36,20 +37,34 @@ public class PlayerController : MonoBehaviour
     {
 
         Move();
-        
+        GravityDown();
         
         
     }
     private void FixedUpdate()
     {
-        //rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.deltaTime    );
-        rb.velocity = new Vector3(moveDir.x * speed, rb.velocity.y, moveDir.z * speed);
+        rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime    );
+        
     }
     public void Move()
     {
-        moveValue = input.Player.Move.ReadValue<Vector2>();
-        moveDir = transform.forward * moveValue.y + transform.right * moveValue.x;
 
+        moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+        moveAmount = Vector3.SmoothDamp(moveAmount, moveDir * (Input.GetKey(KeyCode.LeftShift) ? sprintSpeed: walkSpeed), ref smoothMove,smoothTime) ;
+        if(Input.GetKey(KeyCode.Space) && grounded)
+        {
+            rb.AddForce(transform.up * jumpForce);
+        }
     }
     
+    public void SetGroundedState (bool _grounded)
+    {
+        grounded = _grounded;
+    }
+
+    public void GravityDown()
+    {
+        if (grounded)
+            rb.AddForce(Vector3.down * 80f,ForceMode.Force);
+    }
 }

@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class AimState : MonoBehaviour
 {
-    public Cinemachine.AxisState xAxis, yAxis;
-    [SerializeField] Transform camera;
+    
+    [SerializeField] Transform cameraHolder;
+    [SerializeField] float mouseSensitivity;
+    float verticalLookRotation;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,13 +17,17 @@ public class AimState : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        xAxis.Update(Time.deltaTime);
-        yAxis.Update(Time.deltaTime);
-    }
-    private void FixedUpdate()
-    {
-        camera.localEulerAngles = new Vector3(yAxis.Value, camera.localEulerAngles.y, camera.localEulerAngles.z);
-        transform.eulerAngles = new Vector3(transform.eulerAngles.x, xAxis.Value, transform.eulerAngles.z);
-    }
+        Look();
 
+    }
+    
+    public void Look()
+    {
+        transform.Rotate(Vector3.up * Input.GetAxisRaw("Mouse X") * mouseSensitivity);
+        verticalLookRotation += Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
+        verticalLookRotation = Mathf.Clamp(verticalLookRotation, -90f, 90f);
+
+        cameraHolder.transform.localEulerAngles = Vector3.left * verticalLookRotation;
+
+    }
 }
