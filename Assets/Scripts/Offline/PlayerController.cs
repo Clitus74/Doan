@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PlayerController : MonoBehaviour
 {
     PlayerInputAction input;
-    private Vector2 moveDir = Vector2.zero;
+    private Vector3 moveDir;
     private Rigidbody rb;
     [SerializeField] private float speed = 5f;
+    Vector3 moveAmount;
+    Vector2 moveValue;
+    Vector3 smoothMove;
     private void Awake()
     {
         input = new PlayerInputAction();
@@ -30,10 +34,22 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        moveDir = input.Player.Move.ReadValue<Vector2>();
+
+        Move();
+        
+        
+        
     }
     private void FixedUpdate()
     {
-        rb.velocity = new Vector3(moveDir.x * speed, rb.velocity.y, moveDir.y * speed);
+        //rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.deltaTime    );
+        rb.velocity = new Vector3(moveDir.x * speed, rb.velocity.y, moveDir.z * speed);
     }
+    public void Move()
+    {
+        moveValue = input.Player.Move.ReadValue<Vector2>();
+        moveDir = transform.forward * moveValue.y + transform.right * moveValue.x;
+
+    }
+    
 }
