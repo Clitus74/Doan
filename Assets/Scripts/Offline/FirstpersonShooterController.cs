@@ -40,7 +40,7 @@ public class FirstpersonShooterController : MonoBehaviour
         {
             if (hitTransform != null)
             {
-                //if ...
+                Debug.Log("hit!!");
             }
             Vector3 bulletDir = (hit.point - bulletSpawnPos.position).normalized;
             //Instantiate(bulletPrefab, bulletSpawnPos.position, Quaternion.LookRotation(bulletDir, Vector3.up));
@@ -51,7 +51,7 @@ public class FirstpersonShooterController : MonoBehaviour
     {
         if (Input.GetMouseButton(1))
         {
-            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, defaultFOV * 2 / 3, Time.deltaTime * 20f);
+            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, defaultFOV * 2 / 3, Time.deltaTime * 13f);
             aimState = true;
         }
         if (Input.GetMouseButtonUp(1))
