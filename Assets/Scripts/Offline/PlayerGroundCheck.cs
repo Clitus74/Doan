@@ -1,3 +1,4 @@
+using Den.Tools.GUI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,8 @@ using UnityEngine;
 public class PlayerGroundCheck : MonoBehaviour
 {
    PlayerController playerController;
+
+    
     private void Awake()
     {
         playerController = GetComponentInParent<PlayerController>();
@@ -41,4 +44,6 @@ public class PlayerGroundCheck : MonoBehaviour
         playerController.SetGroundedState(true);
 
     }
+
+    
 }
