@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float sprintSpeed, walkSpeed, jumpForce;
         
     CharacterGroundState charGroundState;
-    public float groundDrag;
+    public float groundDrag,speedMultiplier;
 
     [Header("Slope Check")] public float maxSlopeAngle ;
     private RaycastHit slopeHit;
@@ -42,17 +42,8 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
-
-        if (OnSlope())
-        {
-            onSlope = true;
-            
-        }
-        else
-        {
-            onSlope = false;
-            
-        }
+        GroundSpeedAndDragMultiplier();
+        
         
         
     }
@@ -65,7 +56,7 @@ public class PlayerController : MonoBehaviour
     public void Move()
     {
         moveDir = transform.forward* vInput + transform.right* hInput ;
-        rb.AddForce(moveDir.normalized * walkSpeed * 10f, ForceMode.Force);
+        rb.AddForce(moveDir.normalized * walkSpeed* speedMultiplier * 10f, ForceMode.Force);
     }
     
     
@@ -96,6 +87,36 @@ public class PlayerController : MonoBehaviour
 
     public void GroundSpeedAndDragMultiplier()
     {
+        switch (charGroundState)
+        {
+            
+            case CharacterGroundState.Ground:
+                {
+                    rb.drag = groundDrag;
+                    speedMultiplier = 1f;
+                    break;
+                }
+                
+            case CharacterGroundState.Airborne:
+                {
+                    rb.drag = 0;
+                    speedMultiplier = 0.8f;
+                    break;
+                }
+            case CharacterGroundState.Ice:
+                {
+                    break;
+                }
+            case CharacterGroundState.Swamp:
+
+                {
+                    break;
+                }
+
+
+
+
+        }
 
     }
 

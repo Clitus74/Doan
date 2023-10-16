@@ -14,7 +14,8 @@ public class PlayerGroundCheck : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == playerController.gameObject) return;       
+        if (other.gameObject == playerController.gameObject) return;
+        if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
         playerController.SetGroundState(CharacterGroundState.Ground);
     }
     private void OnTriggerExit(Collider other)
@@ -25,13 +26,15 @@ public class PlayerGroundCheck : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject == playerController.gameObject) return;
-        playerController.SetGroundState(CharacterGroundState.Ground);
+        if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            playerController.SetGroundState(CharacterGroundState.Ground);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject == playerController.gameObject) return;
-        playerController.SetGroundState(CharacterGroundState.Ground);
+        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            playerController.SetGroundState(CharacterGroundState.Ground);
     }
     private void OnCollisionExit(Collision collision)
     {
@@ -41,7 +44,8 @@ public class PlayerGroundCheck : MonoBehaviour
     private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject == playerController.gameObject) return;
-        playerController.SetGroundState(CharacterGroundState.Ground);
+        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            playerController.SetGroundState(CharacterGroundState.Ground);
 
     }
 
