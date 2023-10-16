@@ -345,7 +345,7 @@ GameObject:
   - component: {fileID: 286808622}
   - component: {fileID: 286808621}
   - component: {fileID: 286808620}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -368,14 +368,14 @@ MonoBehaviour:
   sprintSpeed: 10
   walkSpeed: 5
   jumpForce: 10
-  groundDrag: 0
+  groundDrag: 4
   speedMultiplier: 0
   maxSlopeAngle: 0
   onSlope: 0
   angleCheck: 0
   layerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
 --- !u!114 &286808621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -766,7 +766,7 @@ GameObject:
   - component: {fileID: 687170517}
   - component: {fileID: 687170518}
   - component: {fileID: 687170519}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1463,7 +1463,7 @@ GameObject:
   - component: {fileID: 1067514934}
   - component: {fileID: 1067514933}
   - component: {fileID: 1067514935}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1566,7 +1566,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1083306433}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CameraPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1702,6 +1702,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 286808623}
     m_Modifications:
+    - target: {fileID: 3375947968670134538, guid: 4d2575401185a034e86bc38ceaf14f88, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7600763843773382498, guid: 4d2575401185a034e86bc38ceaf14f88, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 8046184142776718683, guid: 4d2575401185a034e86bc38ceaf14f88, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1745,6 +1753,10 @@ PrefabInstance:
     - target: {fileID: 8409887384253280564, guid: 4d2575401185a034e86bc38ceaf14f88, type: 3}
       propertyPath: m_Name
       value: Capsule
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409887384253280564, guid: 4d2575401185a034e86bc38ceaf14f88, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8409887384253280564, guid: 4d2575401185a034e86bc38ceaf14f88, type: 3}
       propertyPath: m_IsActive
