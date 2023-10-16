@@ -366,10 +366,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveDir: {x: 0, y: 0, z: 0}
   sprintSpeed: 10
-  walkSpeed: 5
+  walkSpeed: 7
+  moveSpeed: 0
   jumpForce: 10
+  jumpCD: 0.7
   groundDrag: 4
   speedMultiplier: 0
+  readyToJump: 1
+  grounded: 0
+  jumpKey: 32
   maxSlopeAngle: 0
   onSlope: 0
   angleCheck: 0
@@ -1702,6 +1707,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 286808623}
     m_Modifications:
+    - target: {fileID: 2428544594481783146, guid: 4d2575401185a034e86bc38ceaf14f88, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: f0bb6010b03c0ca4ebd7dda08b18266f, type: 2}
     - target: {fileID: 3375947968670134538, guid: 4d2575401185a034e86bc38ceaf14f88, type: 3}
       propertyPath: m_Layer
       value: 7
