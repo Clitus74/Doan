@@ -10,9 +10,10 @@ public class PlayerController : MonoBehaviour
     
     public Vector3 moveDir ;
     private Rigidbody rb;
-    [SerializeField] float sprintSpeed, walkSpeed, jumpForce, smoothTime;
-    
-    bool grounded;
+    [SerializeField] float sprintSpeed, walkSpeed, jumpForce;
+        
+    CharacterGroundState charGroundState;
+    public float groundDrag;
 
     [Header("Slope Check")] public float maxSlopeAngle ;
     private RaycastHit slopeHit;
@@ -67,10 +68,7 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(moveDir.normalized * walkSpeed * 10f, ForceMode.Force);
     }
     
-    public void SetGroundedState (bool _grounded)
-    {
-        grounded = _grounded;
-    }
+    
 
     /*public void GravityDown()
     {
@@ -86,18 +84,23 @@ public class PlayerController : MonoBehaviour
             Debug.DrawRay(transform.position,Vector3.down *3f,Color.red);
             float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
             angleCheck = angle;
-            return angle < maxSlopeAngle && angle != 0;
-            
-            
-            
-            
-        }
-        
+            return angle < maxSlopeAngle && angle != 0;            
+        }       
         return false;
     }
 
     public Vector3 GetSlopeMoveDirection()
     {
         return Vector3.ProjectOnPlane(moveDir, slopeHit.normal).normalized;
+    }
+
+    public void GroundSpeedAndDragMultiplier()
+    {
+
+    }
+
+    public void SetGroundState(CharacterGroundState _charGroundState)
+    {
+        charGroundState = _charGroundState;
     }
 }

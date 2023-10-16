@@ -15,7 +15,7 @@ public enum RegionState
 
 public enum CharacterGroundState
 {
-    Normal, Ice, Swamp ,Airborne
+    Ground, Ice, Swamp ,Airborne
 }
 
 public enum CharacterAimState

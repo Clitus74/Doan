@@ -14,34 +14,34 @@ public class PlayerGroundCheck : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == playerController.gameObject) return;
-        playerController.SetGroundedState(true);
+        if (other.gameObject == playerController.gameObject) return;       
+        playerController.SetGroundState(CharacterGroundState.Ground);
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject == playerController.gameObject) return;
-        playerController.SetGroundedState(false);  
+        playerController.SetGroundState(CharacterGroundState.Airborne); 
     }
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject == playerController.gameObject) return;
-        playerController.SetGroundedState(true);
+        playerController.SetGroundState(CharacterGroundState.Ground);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject == playerController.gameObject) return;
-        playerController.SetGroundedState(true);
+        playerController.SetGroundState(CharacterGroundState.Ground);
     }
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject == playerController.gameObject) return;
-        playerController.SetGroundedState(false);
+        playerController.SetGroundState(CharacterGroundState.Airborne);
     }
     private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject == playerController.gameObject) return;
-        playerController.SetGroundedState(true);
+        playerController.SetGroundState(CharacterGroundState.Ground);
 
     }
 
