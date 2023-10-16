@@ -6,14 +6,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    PlayerInputAction input;
+    float hInput, vInput;
     
     public Vector3 moveDir ;
     private Rigidbody rb;
     [SerializeField] float sprintSpeed, walkSpeed, jumpForce, smoothTime;
-    Vector3 moveAmount;
     
-    Vector3 smoothMove;
     bool grounded;
 
     [Header("Slope Check")] public float maxSlopeAngle ;
@@ -23,20 +21,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private LayerMask layerMask;
     private void Awake()
-    {
-        input = new PlayerInputAction();
-        
-        
+    {        
         rb = GetComponent<Rigidbody>();
-    }
-
-    private void OnDisable()
-    {
-        input.Disable();
-    }
-    private void OnEnable()
-    {
-        input.Enable();
     }
 
     void Start()
@@ -46,37 +32,39 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-
-        Move();
-        GravityDown();
+        MyInput();
+        
+        //GravityDown();
         
         
     }
     private void FixedUpdate()
     {
-        
-        if(OnSlope())
+        Move();
+
+        if (OnSlope())
         {
             onSlope = true;
-            rb.MovePosition(rb.position + transform.TransformDirection(GetSlopeMoveDirection())*Time.deltaTime);
+            
         }
         else
         {
             onSlope = false;
-            rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
+            
         }
         
         
     }
+
+    public void MyInput()
+    {
+        hInput = Input.GetAxisRaw("Horizontal");
+        vInput = Input.GetAxisRaw("Vertical");
+    }
     public void Move()
     {
-
-        moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
-        moveAmount = Vector3.SmoothDamp(moveAmount, moveDir * (Input.GetKey(KeyCode.LeftShift) ? sprintSpeed: walkSpeed), ref smoothMove,smoothTime) ;
-        if(Input.GetKey(KeyCode.Space) && grounded)
-        {
-            rb.AddForce(transform.up * jumpForce);
-        }
+        moveDir = transform.forward* vInput + transform.right* hInput ;
+        rb.AddForce(moveDir.normalized * walkSpeed * 10f, ForceMode.Force);
     }
     
     public void SetGroundedState (bool _grounded)
@@ -84,11 +72,11 @@ public class PlayerController : MonoBehaviour
         grounded = _grounded;
     }
 
-    public void GravityDown()
+    /*public void GravityDown()
     {
         if (grounded)
             rb.AddForce(Vector3.down * 80f,ForceMode.Force);
-    }
+    }*/
 
     public bool OnSlope()
     {
