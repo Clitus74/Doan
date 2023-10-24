@@ -25,6 +25,11 @@ public class EnemyMovement : MonoBehaviour
 
     private Transform cube;
 
+    private EnemyVision enemyVision;
+    private void Awake()
+    {
+        enemyVision = GetComponent<EnemyVision>();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -36,8 +41,17 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         //indexPosition=0;
         distance = Vector3.Distance(transform.position, destination[0].position);
+        for (int i = 0; i < destination.Count; i++)
+        {
+            if (Vector3.Distance(transform.position, destination[i].position) <= distance)
+            {
+                distance = Vector3.Distance(transform.position, destination[i].position);
+                target = destination[i];
+            }
+        }
 
         /*
         foreach (Transform cube in destination)
@@ -50,26 +64,24 @@ public class EnemyMovement : MonoBehaviour
 
         }
         */
-        
-        for (int i=0; i<destination.Count; i++)
+
+        if (enemyVision.canSeePlayer == true)
         {
-            if (Vector3.Distance(transform.position, destination[i].position) <= distance)
-            {
-                distance = Vector3.Distance(transform.position, destination[i].position);
-                target = destination[i];
-            }
+            target = player;
         }
 
+        /*
         if (Physics.CheckSphere(transform.position, 10, playerMask))
         {
             target = player;
         }
         else
         {
-            //target = cube;
+            target = cube;
         }
+        */
 
-        if(Vector3.Distance(target.position, transform.position) > 3f)
+        if (Vector3.Distance(target.position, transform.position) > 3f)
         {
             agent.SetDestination(target.position);
             enemyAnimator.SetFloat("Speed", 0.2f);
@@ -81,15 +93,17 @@ public class EnemyMovement : MonoBehaviour
             enemyAnimator.SetFloat("Speed", 0f);
 
 
-            target = destination[1];
+            //target = destination[1];
             
 
         }
     }
 
+    /*
     private void OnDrawGizmos()
     {
         Gizmos.color = new Color(1, 0, 0, 0.3f);
         Gizmos.DrawSphere(transform.position, 10);
     }
+    */
 }
