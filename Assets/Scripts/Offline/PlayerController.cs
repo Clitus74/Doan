@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
         MyInput();
         GroundSpeedAndDragMultiplier();
         CCStateManager();
+        OnSlope();
     }
 
     
@@ -102,7 +103,7 @@ public class PlayerController : MonoBehaviour
                 {
                     grounded = false;
                     rb.drag = 0;
-                    speedMultiplier = 0.8f;
+                    speedMultiplier = 0.6f;
                     break;
                 }
             case CharacterGroundState.Ice:

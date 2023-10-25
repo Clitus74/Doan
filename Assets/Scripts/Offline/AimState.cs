@@ -8,6 +8,7 @@ public class AimState : MonoBehaviour
     [SerializeField] Transform camera;
     [SerializeField] float mouseSensitivity;
     float verticalLookRotation;
+    float mouseX, mouseY;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,18 +18,24 @@ public class AimState : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        mouseX = Input.GetAxisRaw("Mouse X");
+        mouseY = Input.GetAxisRaw("Mouse Y");
         Look();
-
     }
     
     public void Look()
     {
-        transform.Rotate(Vector3.up * Input.GetAxisRaw("Mouse X") * mouseSensitivity);
+        transform.Rotate(Vector3.up * mouseX * mouseSensitivity);
         
-        verticalLookRotation += Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
+        verticalLookRotation += mouseY * mouseSensitivity;
         verticalLookRotation = Mathf.Clamp(verticalLookRotation, -90f, 90f);
 
         camera.transform.localEulerAngles = Vector3.left * verticalLookRotation;
+        
+    }
+
+    private void FixedUpdate()
+    {
         
     }
 }

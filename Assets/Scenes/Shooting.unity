@@ -1145,7 +1145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2a8a08672370cf448c257ae5ac1afc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraHolder: {fileID: 1379509189}
+  camera: {fileID: 1113693211}
   mouseSensitivity: 10
 --- !u!114 &1521134102
 MonoBehaviour:
@@ -1159,10 +1159,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 831db716c2f6c6940ad73f7c79d9ecc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveDir: {x: 0, y: 0, z: 0}
   sprintSpeed: 10
   walkSpeed: 5
+  moveSpeed: 0
   jumpForce: 100
-  smoothTime: 0.15
+  jumpCD: 0
+  groundDrag: 0
+  speedMultiplier: 0
+  readyToJump: 1
+  grounded: 0
+  jumpKey: 32
+  maxSlopeAngle: 0
+  onSlope: 0
+  angleCheck: 0
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!54 &1521134103
 Rigidbody:
   m_ObjectHideFlags: 0
