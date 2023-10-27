@@ -12,7 +12,6 @@ public class FirstpersonShooterController : MonoBehaviour
     [SerializeField] private Transform bulletSpawnPos;
     [SerializeField] private Transform bulletPrefab;
 
-
     bool aimState = false;
 
     void Start()
