@@ -376,7 +376,7 @@ MonoBehaviour:
   grounded: 0
   jumpKey: 32
   sprintKey: 304
-  maxSlopeAngle: 0
+  maxSlopeAngle: 50
   onSlope: 0
   angleCheck: 0
   layerMask:

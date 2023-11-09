@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     [Header("Slope Check")] public float maxSlopeAngle ;
     private RaycastHit slopeHit;
     public bool onSlope;
+    private bool exitingSlope;
     public float angleCheck;
     [SerializeField]
     private LayerMask layerMask;
@@ -89,8 +90,18 @@ public class PlayerController : MonoBehaviour
                 moveSpeed = walkSpeed * speedMultiplier;
             }
 
-
+            if(OnSlope() && !exitingSlope)
+            {
+                rb.AddForce(GetSlopeMoveDirection() * moveSpeed * 15f , ForceMode.Force);
+                if (rb.velocity.y > 0)
+                {
+                    rb.AddForce(Vector3.down * 60f, ForceMode.Force);
+                }
+            }
+            else
             rb.AddForce(moveDir.normalized * moveSpeed * 10f, ForceMode.Force);
+
+            rb.useGravity = !OnSlope();
         }
         
     }
@@ -98,9 +109,9 @@ public class PlayerController : MonoBehaviour
     public bool OnSlope()
     {
         
-        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit , 4f, ~layerMask))
+        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit , 1.5f, ~layerMask))
         {
-            Debug.DrawRay(transform.position,Vector3.down *3f,Color.red);
+            Debug.DrawRay(transform.position,Vector3.down * 1.5f,Color.red);
             float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
             angleCheck = angle;
             return angle < maxSlopeAngle && angle != 0;            
@@ -161,6 +172,11 @@ public class PlayerController : MonoBehaviour
 
     private void SpeedControll()
     {
+        if(OnSlope() && !exitingSlope)
+        {
+            if (rb.velocity.magnitude > moveSpeed)
+                rb.velocity = rb.velocity.normalized * moveSpeed;
+        }
         Vector3 flatVel = new Vector3(rb.velocity.x, 0, rb.velocity.z);
 
         if (flatVel.magnitude > moveSpeed)
@@ -171,23 +187,26 @@ public class PlayerController : MonoBehaviour
     }
 
     private void Jump()
-    {      
-            readyToJump = false;
-            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-            rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-            Invoke(nameof(ResetJump), jumpCD);        
-    }
-    private void Leap()
     {
+        exitingSlope = true;
         readyToJump = false;
         rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-        rb.AddForce(moveDir * jumpForce*10, ForceMode.Force);
+        Invoke(nameof(ResetJump), jumpCD);        
+    }
+    private void Leap()
+    {
+        exitingSlope = true;
+        readyToJump = false;
+        rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        rb.AddForce(moveDir * jumpForce*20, ForceMode.Force);
         Invoke(nameof(ResetJump), jumpCD);
     }
     private void ResetJump()
     {
         readyToJump = true;
+        exitingSlope=false;
     }
     public void CCStateManager()
     {
