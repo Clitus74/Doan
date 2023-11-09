@@ -17,12 +17,13 @@ public class PlayerController : MonoBehaviour
 
     CharacterGroundState charGroundState;
     CCState ccState;
+    CharacterLowerMovementState characterLowerMovementState;
 
     
 
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
-
+    public KeyCode sprintKey = KeyCode.LeftShift;
     [Header("Slope Check")] public float maxSlopeAngle ;
     private RaycastHit slopeHit;
     public bool onSlope;
@@ -43,6 +44,7 @@ public class PlayerController : MonoBehaviour
         GroundSpeedAndDragMultiplier();
         CCStateManager();
         OnSlope();
+        
     }
 
     
@@ -56,17 +58,41 @@ public class PlayerController : MonoBehaviour
     {
         hInput = Input.GetAxisRaw("Horizontal");
         vInput = Input.GetAxisRaw("Vertical");
-        if (Input.GetKey(jumpKey) && grounded && readyToJump)
+        if (Input.GetKey(jumpKey) && grounded && readyToJump && (characterLowerMovementState == CharacterLowerMovementState.Walking || characterLowerMovementState == CharacterLowerMovementState.Idle))
         {
             Jump();
         }
-            
+        if (Input.GetKey(jumpKey) && grounded && readyToJump && characterLowerMovementState == CharacterLowerMovementState.Running)
+        {
+            Leap();
+        }
+
     }
     public void Move()
     {
-        moveDir = transform.forward* vInput + transform.right* hInput ;
-        moveSpeed = walkSpeed * speedMultiplier ;
-        rb.AddForce(moveDir.normalized * moveSpeed * 10f, ForceMode.Force);
+        if(ccState == CCState.Normal)
+        {
+            moveDir = transform.forward * vInput + transform.right * hInput;
+            if (Input.GetKey(sprintKey) && grounded && moveDir.magnitude > 0)
+            {
+                characterLowerMovementState = CharacterLowerMovementState.Running;
+                moveSpeed = sprintSpeed * speedMultiplier;
+            }
+            else if(grounded && moveDir.magnitude > 0)
+            {
+                characterLowerMovementState = CharacterLowerMovementState.Walking;
+                moveSpeed = walkSpeed * speedMultiplier;
+            }
+            else
+            {
+                characterLowerMovementState = CharacterLowerMovementState.Idle;
+                moveSpeed = walkSpeed * speedMultiplier;
+            }
+
+
+            rb.AddForce(moveDir.normalized * moveSpeed * 10f, ForceMode.Force);
+        }
+        
     }
  
     public bool OnSlope()
@@ -145,15 +171,19 @@ public class PlayerController : MonoBehaviour
     }
 
     private void Jump()
-    {
-        
-       
+    {      
             readyToJump = false;
             rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
             rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-            Invoke(nameof(ResetJump), jumpCD);
-        
-        
+            Invoke(nameof(ResetJump), jumpCD);        
+    }
+    private void Leap()
+    {
+        readyToJump = false;
+        rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        rb.AddForce(moveDir * jumpForce*10, ForceMode.Force);
+        Invoke(nameof(ResetJump), jumpCD);
     }
     private void ResetJump()
     {
@@ -169,5 +199,10 @@ public class PlayerController : MonoBehaviour
                     break;
                 }
         }
+    }
+
+    public void LowerStateHandler()
+    {
+
     }
 }

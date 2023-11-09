@@ -1,4 +1,4 @@
-public enum CharacterMovementState
+public enum CharacterLowerMovementState
 {
     Idle, Walking, Running, Jumping, Crounching
 }

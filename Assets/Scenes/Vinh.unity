@@ -366,7 +366,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveDir: {x: 0, y: 0, z: 0}
   sprintSpeed: 10
-  walkSpeed: 7
+  walkSpeed: 6
   moveSpeed: 0
   jumpForce: 10
   jumpCD: 0.7
@@ -375,6 +375,7 @@ MonoBehaviour:
   readyToJump: 1
   grounded: 0
   jumpKey: 32
+  sprintKey: 304
   maxSlopeAngle: 0
   onSlope: 0
   angleCheck: 0
