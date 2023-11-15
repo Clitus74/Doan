@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -6,14 +7,19 @@ using UnityEngine;
 public class FirstpersonShooterController : MonoBehaviour
 {
     [SerializeField] private Camera cam;
-    [SerializeField] private Transform testObject;
     [SerializeField] private LayerMask aimLayerMask;
-    [SerializeField] private float defaultFOV = 60f;
+    [SerializeField] public float defaultFOV = 60f;
     [SerializeField] private Transform bulletSpawnPos;
     [SerializeField] private Transform bulletPrefab;
+    [SerializeField] private GameObject gun;
 
-    bool aimState = false;
+    [SerializeField] private KeyCode reloadKey;
 
+    
+    public static Action shootInput;
+    public static Action reloadInput;
+    public static Action ADSInput;
+    
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -21,42 +27,23 @@ public class FirstpersonShooterController : MonoBehaviour
 
     void Update()
     {
-        //Điểm giữa màn hình
-        Vector2 center = new Vector2(Screen.width / 2f, Screen.height / 2f);
-        Ray ray = cam.ScreenPointToRay(center);
-        Transform hitTransform = null;
-        if (Physics.Raycast(ray, out RaycastHit hit, 999f, aimLayerMask))
+        if (Input.GetMouseButton(0))
         {
-            //testObject.position = hit.point;
-            hitTransform = hit.transform;
+            shootInput?.Invoke();
         }
-
-        //Set FOV when use ADS
-        AimDownSightFOV();
         
-        //Shoot
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(reloadKey))
         {
-            if (hitTransform != null)
-            {
-                Debug.Log("hit!!");
-            }
-            Vector3 bulletDir = (hit.point - bulletSpawnPos.position).normalized;
-            //Instantiate(bulletPrefab, bulletSpawnPos.position, Quaternion.LookRotation(bulletDir, Vector3.up));
+            reloadInput?.Invoke();
         }
+        if (Input.GetMouseButtonUp(0))
+        {
+            gun.GetComponent<Animator>().SetBool("Shooting", false);
+        }
+        ADSInput?.Invoke();
+        
+
     }
 
-    private void AimDownSightFOV()
-    {
-        if (Input.GetMouseButton(1))
-        {
-            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, defaultFOV * 2 / 3, Time.deltaTime * 13f);
-            aimState = true;
-        }
-        if (Input.GetMouseButtonUp(1))
-        {
-            cam.fieldOfView = defaultFOV;
-            aimState = false;
-        }
-    }
+    
 }
